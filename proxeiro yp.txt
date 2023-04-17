@@ -1,0 +1,24 @@
+When using np.stack, specifying axis=2 will stack the arrays along the last dimension. In this case, since we are merging three single-channel images to form a color image, we want to stack them along the last dimension to get an array with shape (height, width, 3).
+
+
+
+    for y in range(int(image.shape[0]/2)):
+        image[y] = img[image.shape[0]-y-1]
+        image[image.shape[0]-y-1] = img[y]
+    return image
+     
+
+
+# (5) Put the face mask on the bear's face
+import copy
+start_x = 565
+start_y = 240
+
+maskon_img = copy.deepcopy(img)
+for y in range(start_y, (start_y + bi_mask_img.shape[0])):
+    for x in range(start_x, (start_x + bi_mask_img.shape[1])):
+        for c in range(3):
+            if(bi_mask_img[x-start_x][y-start_y][c]==1):
+                maskon_img[x][y][c] = mask_img[x-start_x][y-start_y][c]
+
+plt.imshow(maskon_img)
